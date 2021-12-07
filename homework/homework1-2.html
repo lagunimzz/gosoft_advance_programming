@@ -3,16 +3,9 @@
   const baseUrl = 'http://13.213.37.38:3000/await-hw/';
   const array = ['head', 'body', 'leg', 'feet'];
   const axiosArray = array.map((item) => axios.get(`${baseUrl}${item}.txt`));
-
-  const callApi = async () => {
-    const head = await axios.get(`${baseUrl}${array[0]}.txt`);
-    const body = await axios.get(`${baseUrl}${array[1]}.txt`);
-    const leg = await axios.get(`${baseUrl}${array[2]}.txt`);
-    const feet = await axios.get(`${baseUrl}${array[3]}.txt`);
-
+  Promise.all(axiosArray).then(([head, body, leg, feet]) => {
     const result = document.getElementById('result');
     result.innerHTML = `${head.data} ${body.data} ${leg.data} ${feet.data}`;
-  };
-  callApi();
+  });
 </script>
 <div id="result"></div>
