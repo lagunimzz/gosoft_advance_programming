@@ -28,26 +28,27 @@
       })
     );
 
-    // const commitList = [
-    //   [{ commit: { author: { name: 'B' } } }],
-    //   [{ commit: { author: { name: 'B' } } }],
-    //   [
-    //     { commit: { author: { name: 'B' } } },
-    //     { commit: { author: { name: 'A' } } },
-    //   ],
-    // ];
-
     const result = [];
+
     commitList
       .flat(1)
-      .map((commit) => commit.commit.author.name)
-      .filter((name) => name !== 'pariyathida')
-      .map((name) => {
-        const index = result.findIndex((item) => item.name === name);
+      .map((commit) => {
+        return {
+          name: commit.commit.author.name,
+          email: commit.commit.author.email,
+        };
+      })
+      .filter(
+        (commit) =>
+          commit.name !== 'pariyathida' &&
+          commit.email !== 'pariyathida@gmail.com'
+      )
+      .map((commit) => {
+        const index = result.findIndex((item) => item.name === commit.name);
         if (index !== -1) {
           result[index].count++;
         } else {
-          result.push({ name, count: 1 });
+          result.push({ name: commit.name, count: 1 });
         }
       }, []);
 
