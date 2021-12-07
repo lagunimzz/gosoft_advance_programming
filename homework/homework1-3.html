@@ -1,0 +1,122 @@
+<link
+  rel="stylesheet"
+  href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+  integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+  crossorigin="anonymous"
+/>
+<div id="img1"></div>
+<div id="img2"></div>
+<div id="img3"></div>
+<div id="table"></div>
+
+<div data-backdrop="static" data-keyboard="false" class="modal" id="myModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Modal Heading</h4>
+      </div>
+      <div class="modal-body">
+        <div class="progress">
+          <div id="progress-bar" class="progress-bar" style="width: 0%">0%</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script
+  src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+  integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+  crossorigin="anonymous"
+></script>
+<script
+  src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+  integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+  crossorigin="anonymous"
+></script>
+<script
+  src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+  integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+  crossorigin="anonymous"
+></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+<script>
+  const progressBar = $('#progress-bar');
+
+  const imgList = [
+    {
+      id: 'img1',
+      url: 'http://www.effigis.com/wp-content/uploads/2015/02/Iunctus_SPOT5_5m_8bit_RGB_DRA_torngat_mountains_national_park_8bits_1.jpg',
+    },
+    {
+      id: 'img2',
+      url: 'http://www.effigis.com/wp-content/uploads/2015/02/Infoterra_Terrasar-X_1_75_m_Radar_2007DEC15_Toronto_EEC-RE_8bits_sub_r_12.jpg',
+    },
+    {
+      id: 'img3',
+      url: 'http://www.effigis.com/wp-content/uploads/2015/02/DigitalGlobe_WorldView1_50cm_8bit_BW_DRA_Bangkok_Thailand_2009JAN06_8bits_sub_r_1.jpg',
+    },
+  ];
+
+  const loadImage = async () => {
+    for (const img of imgList) {
+      await new Promise((resolve, reject) => {
+        const newImg = new Image();
+        newImg.onload = function () {
+          setProgressBar(
+            +progressBar.html().substring(0, progressBar.html().length - 1) + 25
+          );
+
+          resolve('ok');
+        };
+
+        newImg.src = img.url;
+
+        $('#' + img.id).append(newImg);
+      });
+    }
+  };
+
+  const setProgressBar = (number) => {
+    progressBar.css('width', `${number}%`);
+    progressBar.html(`${number}%`);
+  };
+
+  const loadStuff = async () => {
+    $('#myModal').modal('show');
+    await loadImage();
+
+    const data = await axios.get('http://13.213.37.38:3000/await-hw/data.json');
+    $('#table').html(
+      `<table class="table table-striped table-bordered">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>FirstName</th>
+            <th>LastName</th>
+            <th>Company</th>
+            <th>Salary</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${data.data
+            .map(
+              (item) => `<tr>
+                  <td>${item.id}</td>
+                  <td>${item.firstname}</td>
+                  <td>${item.lastname}</td>
+                  <td>${item.company}</td>
+                  <td>${item.salary}</td>
+                </tr>`
+            )
+            .join('')}
+        </tbody>
+      `
+    );
+    setProgressBar(100);
+    $('#myModal').modal('hide');
+  };
+
+  loadStuff();
+</script>
