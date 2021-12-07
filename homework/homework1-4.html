@@ -1,0 +1,31 @@
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script>
+  const main = async () => {
+    await octokit.request('GET /rate_limit');
+    const repoList = await axios.get(
+      'https://api.github.com/users/pariyathida/repos'
+    );
+    const repoNameList = repoList.data.map((repo) => repo.name);
+
+    const commitList = await Promise.all(
+      repoNameList.map(async (repoName) => {
+        try {
+          const result = await axios.get(
+            `https://api.github.com/repos/pariyathida/${repoName}/commits`
+          );
+          return result.data;
+        } catch (error) {
+          return [];
+        }
+      })
+    );
+
+    console.log(
+      commitList
+        .flat(1)
+        .map((commit) => commit.commit.author.name)
+        .filter((name) => name !== 'pariyathida')
+    );
+  };
+  main();
+</script>
