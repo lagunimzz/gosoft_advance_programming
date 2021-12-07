@@ -1,0 +1,100 @@
+<!-- ธนวัฒน์ ลี้ตระกูลนำชัย -->
+<style>
+  .container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    /* grid-gap: 10px; */
+    /* padding: 10px; */
+  }
+  form {
+    border: 1px solid black;
+  }
+  table,
+  th,
+  td {
+    border: 1px solid black;
+  }
+</style>
+
+<h1>Register</h1>
+<div style="color: red" id="error"></div>
+<form id="form">
+  <div class="container">
+    Username:
+    <input id="username" type="text" name="Username" value="" />
+    Password:
+    <input
+      id="password"
+      type="password"
+      name="password"
+      placeholder="Password"
+    />
+    Confirm Password:
+    <input
+      id="confirmPassword"
+      type="password"
+      name="confirmPassword"
+      placeholder="Confirm Password"
+    />
+    Email:
+    <input id="email" type="email" name="email" placeholder="Email" />
+    Confirm Email:
+    <input
+      id="confirmEmail"
+      type="email"
+      name="confirmEmail"
+      placeholder="confirmEmail"
+    />
+  </div>
+  <div style="text-align: center">
+    <input type="submit" value="Submit" />
+    <!-- <button onclick="submitForm()" type="button">Submit</butto> -->
+  </div>
+  <table id="result"></table>
+</form>
+<script>
+  var form = document.getElementById('form');
+  //   function handleForm(event) {
+  //     event.preventDefault();
+  //   }
+  form.addEventListener('submit', submitForm);
+
+  function submitForm(event) {
+    event.preventDefault();
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
+    const confirmPassword = document.getElementById('confirmPassword').value;
+    const email = document.getElementById('email').value;
+    const confirmEmail = document.getElementById('confirmEmail').value;
+    const error = document.getElementById('error');
+
+    if (username === '') {
+      error.innerHTML = 'Username is empty';
+      return false;
+    } else if (password === '') {
+      error.innerHTML = 'Password is empty';
+      return false;
+    } else if (email === '') {
+      error.innerHTML = 'Email is empty';
+      return false;
+    } else if (confirmPassword === '') {
+      error.innerHTML = 'Confirm Password is empty';
+      return false;
+    } else if (confirmEmail === '') {
+      error.innerHTML = 'Confirm Email is empty';
+      return false;
+    } else if (password !== confirmPassword) {
+      error.innerHTML = 'Password and Confirm Password do not match';
+      return false;
+    } else if (email !== confirmEmail) {
+      error.innerHTML = 'Email and Confirm Email do not match';
+      return false;
+    } else {
+      const result = document.getElementById('result');
+      error.innerHTML = '';
+      result.innerHTML += `<tr><th>${username}</th><th>${password}</th><th>${email}</th></tr>`;
+      return true;
+    }
+    event.preventDefault();
+  }
+</script>

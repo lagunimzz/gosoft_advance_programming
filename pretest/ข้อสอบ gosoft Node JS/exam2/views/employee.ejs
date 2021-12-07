@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title><%= title %></title>
+  </head>
+  <body>
+    <a href="/employee">Employee</a> <a href="/job-no-one/1">Job</a>
+    <table>
+      <tr>
+        <th>ID</th>
+        <th>FirstName</th>
+        <th>LastName</th>
+        <th>JobName</th>
+      </tr>
+
+      <% for (item of employee) { %>
+      <tr>
+        <td><%= item.id %></td>
+        <td><%= item.firstname %></td>
+        <td><%= item.lastname %></td>
+        <td><%= item.job_name %></td>
+        <td>
+          <img src="<%= item.image_name %>" alt="<%= item.firstname %>" />
+        </td>
+      </tr>
+      <% } %>
+    </table>
+  </body>
+</html>

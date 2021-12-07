@@ -1,0 +1,51 @@
+<!-- ธนวัฒน์ ลี้ตระกูลนำชัย -->
+<style>
+  .text {
+    font-size: 20px;
+  }
+  .image-section {
+    display: grid;
+    gap: 2px;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    justify-content: center;
+  }
+  .content {
+    display: flex;
+    flex-direction: column;
+  }
+  @media (min-width: 768px) {
+    .content {
+      display: flex;
+      flex-direction: row;
+    }
+    .text {
+      font-size: 40px;
+    }
+    .image-section {
+      display: flex;
+    }
+  }
+</style>
+<h1>เพิ่มรูป</h1>
+<div class="text">
+  Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+  Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
+  when an unknown printer took a galley of type and scrambled it to make a type
+  specimen book. It has survived not only five centuries, but also the leap into
+  electronic typesetting, remaining essentially unchanged. It was popularised in
+  the 1960s with the release of Letraset sheets containing Lorem Ipsum
+</div>
+<div class="content">
+  <div>
+    <img src="./orange.jpeg" alt="Fjords" width="200px" height="auto" />
+  </div>
+
+  <div class="image-section">
+    <img width="200px" height="auto" src="./orange.jpeg" alt="Fjords" />
+    <img width="200px" height="auto" src="./orange.jpeg" alt="Fjords" />
+    <img width="200px" height="auto" src="./orange.jpeg" alt="Fjords" />
+    <img width="200px" height="auto" src="./orange.jpeg" alt="Fjords" />
+    <!-- <img src="./orange.jpeg" alt="Fjords" /> -->
+  </div>
+</div>
