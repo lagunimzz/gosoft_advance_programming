@@ -18,7 +18,7 @@ function App() {
       {data.length === 0
         ? 'Loading...'
         : data.lists.map((d) => (
-            <p>
+            <p key={d.id}>
               {d.id} {d.detail} {d.todo} {d.status}
             </p>
           ))}
