@@ -3,11 +3,15 @@ const alphabet = alpha.map((x) => String.fromCharCode(x));
 const http = require('http');
 
 const swap = (arr) => {
-  const result = [];
-  for (let index = 0; index < arr.length; index += 2) {
-    result.push(arr[index + 1], arr[index]);
+  try {
+    const result = [];
+    for (let index = 0; index < arr.length; index += 2) {
+      result.push(arr[index + 1], arr[index]);
+    }
+    return result;
+  } catch (error) {
+    console.error(error);
   }
-  return result;
 };
 
 http
