@@ -1,0 +1,13 @@
+[{
+    "productCode": 1,
+    "productName": "ซาลาเปา",
+    "price": 27
+}, {
+    "productCode": 2,
+    "productName": "แซนวิช",
+    "price": 29
+}, {
+    "productCode": 3,
+    "productName": "ขนมจีบ",
+    "price": 32
+}]

@@ -1,0 +1,19 @@
+[{
+        "id": 1,
+        "firstName": "Eddard",
+        "lastName": "Stark",
+        "employeeId": "001",
+        "position": "Software Engineer",
+        "telephone": "1234567890",
+        "email": "eddardsta@got.com"
+    },
+    {
+        "id": 2,
+        "firstName": "Tyrion",
+        "lastName": "Lannister",
+        "employeeId": "002",
+        "position": "Software Engineer",
+        "telephone": "1234567890",
+        "email": "tyrionlan@got.com"
+    }
+]
