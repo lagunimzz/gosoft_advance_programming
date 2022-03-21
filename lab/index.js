@@ -1,48 +1,133 @@
 const express = require('express');
-const bodyParser = require('body-parser');
-const app = express();
-const port = 3000;
 
-const product = require('./product.json');
+const oracledb = require('oracledb');
+// hr schema password
+const app = express();
+const bodyParser = require('body-parser');
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+// checkConnection asycn function
+const dbConfig = {
+  user: 'gosoft13',
+  password: '12345678',
+  connectString: '45.32.119.244:1521',
+};
 
-app.get('/product', (req, res) => {
-  res.json({ result: product });
-});
-app.post('/product', (req, res) => {
-  const { productName, price } = req.body;
-  product.push({ productCode: product.length + 1, productName, price });
-  res.status(201).json({ result: product });
-});
-
-app.put('/product/:productCode', (req, res) => {
+async function checkConnection() {
+  let connection;
   try {
-    const { productCode } = req.params;
-    const { productName, price } = req.body;
-    const index = product.findIndex((p) => p.productCode === productCode);
+    connection = await oracledb.getConnection(dbConfig);
 
-    product[index].productName = productName;
-    product[index].price = price;
+    console.log('connected to database');
+  } catch (err) {
+    console.error(err.message);
+  } finally {
+    if (connection) {
+      try {
+        // Always close connections
+        await connection.close();
+        console.log('close connection success');
+      } catch (err) {
+        console.error(err.message);
+      }
+    }
+  }
+}
 
-    res.status(200).json({ result: product });
-  } catch (error) {
-    res.status(404).send('Not Found');
+app.get('/product', async (req, res) => {
+  let connection;
+
+  try {
+    const connection = await oracledb.getConnection(dbConfig);
+    result = await connection.execute(`SELECT * FROM product`);
+    res.send(result);
+  } catch (err) {
+    throw err;
+  } finally {
+    if (connection) {
+      try {
+        await connection.close(); // Put the connection back in the pool
+      } catch (err) {
+        throw err;
+      }
+    }
+  }
+});
+app.post('/product', async (req, res) => {
+  let connection;
+  const { productCode, productName } = req.body;
+
+  try {
+    const connection = await oracledb.getConnection(dbConfig);
+    result = await connection.execute(
+      `
+      INSERT INTO gosoft13.PRODUCT
+      (PRODUCT_CODE, PRODUCT_NAME)
+      VALUES(:productCode, :productName)
+    `,
+      [productCode, productName],
+      { autoCommit: true }
+    );
+    res.send(result);
+  } catch (err) {
+    throw err;
+  } finally {
+    if (connection) {
+      try {
+        await connection.close(); // Put the connection back in the pool
+      } catch (err) {
+        throw err;
+      }
+    }
+  }
+});
+app.put('/product/:productCode', async (req, res) => {
+  let connection;
+  const { productCode } = req.params;
+  const { productName } = req.body;
+  try {
+    const connection = await oracledb.getConnection(dbConfig);
+    result = await connection.execute(
+      `UPDATE product SET PRODUCT_NAME = :productName WHERE PRODUCT_CODE = :productCode`,
+      [productName, productCode],
+      { autoCommit: true }
+    );
+    res.send(result);
+  } catch (err) {
+    throw err;
+  } finally {
+    if (connection) {
+      try {
+        await connection.close(); // Put the connection back in the pool
+      } catch (err) {
+        throw err;
+      }
+    }
+  }
+});
+app.delete('/product/:productCode', async (req, res) => {
+  let connection;
+  const { productCode } = req.params;
+  try {
+    const connection = await oracledb.getConnection(dbConfig);
+    result = await connection.execute(
+      `DELETE FROM product WHERE PRODUCT_CODE = :productCode`,
+      [productCode],
+      { autoCommit: true }
+    );
+    res.send(result);
+  } catch (err) {
+    throw err;
+  } finally {
+    if (connection) {
+      try {
+        await connection.close(); // Put the connection back in the pool
+      } catch (err) {
+        throw err;
+      }
+    }
   }
 });
 
-app.delete('/product/:productCode', (req, res) => {
-  try {
-    const { productCode } = req.params;
-    const index = product.findIndex((p) => p.productCode === productCode);
-    product.splice(index, 1);
-    res.json({ result: product });
-  } catch (error) {
-    res.status(404).send('Not Found');
-  }
-});
-
-app.listen(port, () => {
-  console.log(`Listening at http://localhost:${port}`);
-});
+app.listen(4000, checkConnection());
