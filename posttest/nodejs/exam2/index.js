@@ -75,7 +75,7 @@ app.post('/login', async (req, res) => {
     if (match) {
       const accessToken = jwt.sign({ username: rows[0].USERNAME }, 'secret');
 
-      localStorage.setItem('accessToken', accessToken);
+      // localStorage.setItem('accessToken', accessToken);
 
       res.render('profile', {
         title: 'profile',
@@ -100,7 +100,7 @@ app.use(function (req, res, next) {
 });
 
 app.get('/logout', function (req, res) {
-  localStorage.removeItem('accessToken');
+  // localStorage.removeItem('accessToken');
   res.render('login', { title: 'login' });
 });
 
