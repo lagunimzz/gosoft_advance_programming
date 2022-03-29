@@ -1,0 +1,17 @@
+<style>
+  .myForm {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+</style>
+<form method="POST" action="/register">
+  <div class="myForm">
+    Username: <input type="text" id="username" name="username" /> Password:
+    <input type="password" id="password" name="password" /> Confirm Password:
+    <input type="password" id="confirmPassword" name="confirmPassword" /> Email:
+    <input type="text" id="email" name="email" /> ComfirmEmail:
+    <input type="text" id="confirmEmail" name="confirmEmail" />
+  </div>
+
+  <input type="submit" value="Register" />
+</form>
